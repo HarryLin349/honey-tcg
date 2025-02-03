@@ -60,8 +60,8 @@ const TradingCard = ({ title, image, description }) => {
                         rgba(0, 150, 255, 0.6) 70%, 
                         rgba(255, 0, 150, 0.4) 90%
                     )`,
-                    mixBlendMode: "color-dodge",
-                    opacity: 0.5,
+                    mixBlendMode: "multiply",
+                    opacity: 1,
                     transition: "background 0.1s ease",
                     filter: "blur(5px)",
                 }}
