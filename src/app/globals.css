@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.perspective-container {
+  transform-style: preserve-3d;
+  transform: perspective(1500px);
+}
