@@ -1,50 +1,61 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
+import {
+    motion,
+    useMotionValue,
+    useSpring,
+    useTransform,
+    useMotionTemplate,
+} from "framer-motion";
 
 const TradingCard = ({ title, image, description, holo = true }) => {
-    const [rotateX, setRotateX] = useState(0);
-    const [rotateY, setRotateY] = useState(0);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
 
-    const handleMouseMove = (e) => {
-        const { clientX, clientY, currentTarget } = e;
-        const { width, height, left, top } =
-            currentTarget.getBoundingClientRect();
+    // Add spring physics
+    const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), {
+        stiffness: 500,
+        damping: 30,
+    });
+    const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-15, 15]), {
+        stiffness: 500,
+        damping: 30,
+    });
 
-        // Calculate center point
-        const centerX = left + width / 2;
-        const centerY = top + height / 2;
-        const maxRotation = 20;
-        // Calculate rotation based on mouse position relative to center
-        const rotateY = Math.max(
-            Math.min(
-                ((clientX - centerX) / (width / 2)) * maxRotation,
-                maxRotation
-            ),
-            -maxRotation
-        );
-        const rotateX = Math.max(
-            Math.min(
-                -((clientY - centerY) / (height / 2)) * maxRotation,
-                maxRotation
-            ),
-            -maxRotation
-        );
+    // Create a motion value for the gradient rotation
+    const gradientRotation = useTransform(rotateX, [-15, 15], [-30, 30]);
 
-        setRotateX(rotateX);
-        setRotateY(rotateY);
-    };
+    // Create the gradient template
+    const gradient = useMotionTemplate`linear-gradient(
+        ${gradientRotation}deg,
+        rgba(255, 0, 150, 0.5) 10%,
+        rgba(0, 255, 255, 0.7) 30%,
+        rgba(255, 255, 0, 0.6) 50%,
+        rgba(0, 150, 255, 0.7) 70%,
+        rgba(255, 0, 150, 0.5) 90%
+    )`;
 
-    const handleMouseLeave = () => {
-        setRotateX(0);
-        setRotateY(0);
-    };
+    function handleMouse(event) {
+        const rect = event.currentTarget.getBoundingClientRect();
 
-    // Calculate dynamic shadow based on rotation
-    const shadowX = rotateY / 4;
-    const shadowY = -rotateX / 4;
-    const shadowBlur = Math.abs(rotateX) + Math.abs(rotateY);
+        const width = rect.width;
+        const height = rect.height;
+
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+
+        x.set(xPct);
+        y.set(yPct);
+    }
+
+    function handleMouseLeave() {
+        x.set(0);
+        y.set(0);
+    }
 
     return (
         <div
@@ -53,54 +64,25 @@ const TradingCard = ({ title, image, description, holo = true }) => {
         >
             <motion.div
                 className="relative w-64 h-96 bg-slate-500 shadow-lg rounded-2xl p-4 flex flex-col items-center text-center border border-gray-300 overflow-hidden"
-                animate={{
+                style={{
+                    transformStyle: "preserve-3d",
                     rotateX: rotateX,
                     rotateY: rotateY,
                 }}
-                transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    damping: 20,
-                    mass: 1,
-                }}
-                style={{
-                    transformStyle: "preserve-3d",
-                    position: "relative",
-                    boxShadow: `
-                        ${shadowX}px ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, 0.3),
-                        0 4px 6px -1px rgba(0, 0, 0, 0.1),
-                        0 2px 4px -1px rgba(0, 0, 0, 0.06)
-                    `,
-                }}
-                onMouseMove={handleMouseMove}
+                onMouseMove={handleMouse}
                 onMouseLeave={handleMouseLeave}
             >
-                {/* Holographic Effect Layer */}
                 {holo && (
-                    <div
+                    <motion.div
                         className="absolute inset-0 pointer-events-none"
                         style={{
-                            background: `linear-gradient(
-                            ${rotateX * 2}deg, 
-                            rgba(255, 0, 150, 0.4) 10%, 
-                            rgba(0, 255, 255, 0.6) 30%, 
-                            rgba(255, 255, 0, 0.5) 50%, 
-                            rgba(0, 150, 255, 0.6) 70%, 
-                            rgba(255, 0, 150, 0.4) 90%
-                        )`,
+                            background: gradient,
                             mixBlendMode: "multiply",
-                            opacity: 1,
-                            transition: "background 0.1s ease",
-                            filter: "blur(5px)",
+                            opacity: 0.6,
+                            filter: "blur(4px)",
                         }}
-                    ></div>
+                    />
                 )}
-
-                <div>
-                    <p>{title}</p>
-                    <p>rx: {rotateX.toFixed(2)}</p>
-                    <p>ry: {rotateY.toFixed(2)}</p>
-                </div>
 
                 <img
                     src={image}
