@@ -2,13 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyC0kXDl6LAWmzU9MB5jq1pGc1xgD0iRmPM",
-    authDomain: "honey-tcg.firebaseapp.com",
-    projectId: "honey-tcg",
-    storageBucket: "honey-tcg.firebasestorage.app",
-    messagingSenderId: "461550467966",
-    appId: "1:461550467966:web:1a25bae11fec136c1fd12f",
-    measurementId: "G-1YK9LR7QN3",
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
