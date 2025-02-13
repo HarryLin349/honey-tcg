@@ -1,29 +1,37 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import TradingCardView from "../../components/TradingCardView";
 import TabBar from "../../components/TabBar";
-import { masterCards } from "../../data/master-cards";
 import { getRandomCards, addCardsToCollection } from "../../firebase/db";
 import { auth } from "../../firebase/config";
-import { useState } from "react";
+import { TradingCard } from "../../types/trading-card";
+import RevealCard from "../../components/RevealCard";
 
 export default function Home() {
     const [isDrawing, setIsDrawing] = useState(false);
+    const [drawnCards, setDrawnCards] = useState<Array<{ card: TradingCard, holo: boolean }>>([]);
 
     const handleDrawCards = async () => {
         const user = auth.currentUser;
         if (!user) return;
 
         setIsDrawing(true);
+        setDrawnCards([]); // Clear previous cards
+        
         try {
-            const drawnCards = getRandomCards(3);
-            const userCards = drawnCards.map(card => ({
+            const newCards = getRandomCards(3);
+            const userCards = newCards.map(card => ({
                 cardId: card.id,
-                holo: Math.random() < 0.1 // 10% chance of holo
+                holo: Math.random() < 0.1
             }));
 
             await addCardsToCollection(user.uid, userCards);
-            alert('Added 3 new cards to your collection!');
+            
+            // Set new cards after adding to collection
+            setDrawnCards(newCards.map((card, idx) => ({
+                card,
+                holo: userCards[idx].holo
+            })));
         } catch (error) {
             console.error('Error drawing cards:', error);
             alert('Failed to draw cards');
@@ -44,9 +52,19 @@ export default function Home() {
                 >
                     {isDrawing ? 'Drawing...' : 'Draw 3 Cards'}
                 </button>
-                {/* <div>
-                    <TradingCardView tradingCard={masterCards[0]} holo={false} />
-                </div> */}
+                
+                {drawnCards.length > 0 && (
+                    <div className="flex flex-col items-center">
+                        <h2 className="text-2xl font-bold text-gray-700 mb-4">Click cards to reveal!</h2>
+                        <div className="flex flex-wrap justify-center gap-8">
+                            {drawnCards.map(({ card, holo }, idx) => (
+                                <div key={idx} className="animate-fade-in">
+                                    <RevealCard card={card} holo={holo} />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

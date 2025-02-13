@@ -86,4 +86,4 @@ export interface UserCard {
 export interface UserCollection {
     userId: string;
     cards: UserCard[];
-} 
+}

@@ -45,5 +45,5 @@ export async function getUserCollection(userId: string): Promise<TradingCard[]> 
             ...masterCard,
             holo: userCard.holo
         };
-    }).filter((card): card is TradingCard => card !== null);
+    }).filter((card: TradingCard | null): card is TradingCard => card !== null);
 } 
