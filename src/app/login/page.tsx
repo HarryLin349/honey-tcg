@@ -10,16 +10,12 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        console.log("API KEY", process.env.NEXT_PUBLIC_FIREBASE_API_KEY)
-        console.log("AUTH DOMAIN", process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN)
-        console.log("PROJECT ID", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
-        console.log("STORAGE BUCKET", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET)
-        console.log("MESSAGING SENDER ID", process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID)
-        console.log("APP ID", process.env.NEXT_PUBLIC_FIREBASE_APP_ID)
         e.preventDefault();
+        setIsLoading(true);
         try {
             if (isLogin) {
                 await signInWithEmailAndPassword(auth, email, password);
@@ -28,7 +24,10 @@ export default function Login() {
             }
             router.push("/home");
         } catch (error: any) {
-            setError(error.message);
+            console.error("Auth error:", error);
+            setError(error.message || "Authentication failed");
+        } finally {
+            setIsLoading(false);
         }
     };
 

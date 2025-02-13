@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import TabBar from "../../components/TabBar";
 import { getRandomCards, addCardsToCollection, checkLoginBonus, updateFlowerPoints } from "../../firebase/db";
 import { auth } from "../../firebase/config";
@@ -12,18 +13,37 @@ export default function Home() {
     const [isDrawing, setIsDrawing] = useState(false);
     const [drawnCards, setDrawnCards] = useState<Array<{ card: TradingCard, holo: boolean }>>([]);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
-        const initializeUserData = async () => {
-            const user = auth.currentUser;
-            if (user) {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                console.log("No user found, pushing to login");
+                router.push('/login');
+                return;
+            }
+            
+            try {
                 const points = await checkLoginBonus(user.uid);
                 setFlowerPoints(points);
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            } finally {
+                setLoading(false);
             }
-        };
+        });
 
-        initializeUserData();
-    }, []);
+        return () => unsubscribe();
+    }, [router]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                <p>Loading...</p>
+            </div>
+        );
+    }
 
     const handleDrawCards = async () => {
         const user = auth.currentUser;
