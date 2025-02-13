@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import TradingCardView from "../../components/TradingCardView";
 import TabBar from "../../components/TabBar";
 import { getRandomCards, addCardsToCollection, checkLoginBonus, updateFlowerPoints } from "../../firebase/db";
 import { auth } from "../../firebase/config";

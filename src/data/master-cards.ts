@@ -1,4 +1,4 @@
-import { TradingCard, CardType, CardTypeEmoji, Rarity, Move } from '../types/trading-card';
+import { TradingCard, CardType, Rarity } from '../types/trading-card';
 
 export const masterCards: TradingCard[] = [
     {

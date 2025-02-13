@@ -87,3 +87,12 @@ export interface UserCollection {
     userId: string;
     cards: UserCard[];
 }
+
+export interface SellResult {
+    updatedPoints: number;
+    specialEffect?: {
+        type: 'honeypot' | 'wheelOfFortune';
+        success: boolean;
+        holoCardName?: string;
+    };
+}

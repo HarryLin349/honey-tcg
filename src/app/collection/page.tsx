@@ -17,7 +17,11 @@ export default function Collection() {
     const [sortBy, setSortBy] = useState('id');
     const [selectedCard, setSelectedCard] = useState<TradingCard | null>(null);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
-    const [specialEffect, setSpecialEffect] = useState<any>(null);
+    const [specialEffect, setSpecialEffect] = useState<{
+        type: 'honeypot' | 'wheelOfFortune';
+        success: boolean;
+        holoCardName?: string;
+    } | null>(null);
 
     useEffect(() => {
         const loadCollection = async () => {

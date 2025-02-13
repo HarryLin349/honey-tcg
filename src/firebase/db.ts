@@ -5,6 +5,7 @@ import { masterCards } from '../data/master-cards';
 import { UserData } from '../types/user';
 import { Rarity } from '../types/trading-card';
 import { auth } from './config';
+import { SellResult } from '../types/trading-card';
 
 // Get random cards from master collection with rarity weights
 export function getRandomCards(count: number): TradingCard[] {
@@ -179,15 +180,6 @@ export function getCardSellPrice(card: TradingCard): number {
     return price;
 }
 
-interface SellResult {
-    updatedPoints: number;
-    specialEffect?: {
-        type: 'honeypot' | 'wheelOfFortune';
-        success: boolean;
-        holoCardName?: string;  // For wheel of fortune success case
-    };
-}
-
 // Remove card from collection and add flower points
 export async function sellCard(userId: string, cardToSell: TradingCard): Promise<SellResult> {
     const userCollectionRef = doc(db, 'collections', userId);
@@ -212,7 +204,7 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
     const updatedCards = [...collection.cards];
     updatedCards.splice(cardIndex, 1);
 
-    let specialEffect;
+    let specialEffect: SellResult['specialEffect'];
 
     // Special case: Wheel of Fortune
     if (cardToSell.id === 'card39') {
@@ -232,7 +224,7 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
                     // Get the card name from master cards
                     const masterCard = masterCards.find(card => card.id === cardToMakeHolo.cardId);
                     specialEffect = {
-                        type: 'wheelOfFortune',
+                        type: 'wheelOfFortune' as const,
                         success: true,
                         holoCardName: masterCard?.title
                     };
@@ -240,7 +232,7 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
             }
         } else {
             specialEffect = {
-                type: 'wheelOfFortune',
+                type: 'wheelOfFortune' as const,
                 success: false
             };
         }
@@ -256,7 +248,7 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
     if (cardToSell.id === 'card40') {
         sellPrice += 10;
         specialEffect = {
-            type: 'honeypot',
+            type: 'honeypot' as const,
             success: true
         };
     }
@@ -267,4 +259,4 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
         updatedPoints,
         specialEffect
     };
-} 
+}

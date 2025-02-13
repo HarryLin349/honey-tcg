@@ -167,6 +167,7 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
             case CardType.Star:
                 return "bg-gradient-to-br from-yellow-200 to-amber-300";
             case CardType.Normal:
+                return "bg-gradient-to-br from-slate-300 to-gray-500";
             default:
                 return "bg-gradient-to-br from-slate-300 to-gray-500";
         }

@@ -12,7 +12,7 @@ export default function Login() {
     const [isLogin, setIsLogin] = useState(true);
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             if (isLogin) {
@@ -21,7 +21,7 @@ export default function Login() {
                 await createUserWithEmailAndPassword(auth, email, password);
             }
             router.push("/home");
-        } catch (error) {
+        } catch (error: any) {
             setError(error.message);
         }
     };
