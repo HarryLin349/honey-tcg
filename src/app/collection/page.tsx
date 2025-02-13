@@ -98,7 +98,7 @@ export default function Collection() {
             <TabBar />
             <div className="max-w-7xl mx-auto px-4">
                 <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">My Collection</h1>
-                <div className="mb-4 text-lg text-center">
+                <div className="mb-4 text-lg text-slate-700 text-center">
                     Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
                 </div>
                 <div className="flex justify-center mb-6">

@@ -65,7 +65,7 @@ export default function Home() {
             <TabBar />
             <div className="flex flex-col items-center">
                 <h1 className="text-4xl font-bold text-gray-800 mb-4">Honey TCG</h1>
-                <div className="mb-4 text-lg">
+                <div className="mb-4 text-lg text-slate-700">
                     Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
                 </div>
                 <div className="text-sm text-gray-600 mb-6 text-center">
