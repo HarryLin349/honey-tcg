@@ -2,6 +2,7 @@ import { db } from './config';
 import { collection, getDocs, query, where, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { UserCollection, TradingCard, UserCard } from '../types/trading-card';
 import { masterCards } from '../data/master-cards';
+import { UserData } from '../types/user';
 
 // Get random cards from master collection
 export function getRandomCards(count: number): TradingCard[] {
@@ -46,4 +47,86 @@ export async function getUserCollection(userId: string): Promise<TradingCard[]> 
             holo: userCard.holo
         };
     }).filter((card: TradingCard | null): card is TradingCard => card !== null);
+}
+
+// Get user data
+export async function getUserData(userId: string): Promise<UserData | null> {
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+    
+    if (!userSnap.exists()) {
+        return null;
+    }
+    
+    return userSnap.data() as UserData;
+}
+
+// Initialize or update user data
+export async function initializeUser(userId: string): Promise<UserData> {
+    const userRef = doc(db, 'users', userId);
+    const userData: UserData = {
+        userId,
+        flowerPoints: 30,
+        lastLoginBonus: new Date().toISOString().split('T')[0]
+    };
+    
+    await setDoc(userRef, userData);
+    return userData;
+}
+
+// Check and give daily login bonus
+export async function checkLoginBonus(userId: string): Promise<number> {
+    const userRef = doc(db, 'users', userId);
+    const userData = await getUserData(userId);
+    const today = new Date().toISOString().split('T')[0];
+    
+    if (!userData) {
+        return (await initializeUser(userId)).flowerPoints;
+    }
+    
+    // Handle NaN flower points
+    if (isNaN(userData.flowerPoints)) {
+        const fixedData = {
+            ...userData,
+            flowerPoints: 10
+        };
+        await setDoc(userRef, fixedData);
+        return 10;
+    }
+    
+    if (userData.lastLoginBonus !== today) {
+        const updatedData = {
+            ...userData,
+            flowerPoints: userData.flowerPoints + 10,
+            lastLoginBonus: today
+        };
+        await setDoc(userRef, updatedData);
+        return updatedData.flowerPoints;
+    }
+    
+    return userData.flowerPoints;
+}
+
+// Update flower points
+export async function updateFlowerPoints(userId: string, amount: number): Promise<number> {
+    const userRef = doc(db, 'users', userId);
+    const userData = await getUserData(userId);
+    
+    if (!userData) {
+        throw new Error('User not found');
+    }
+    
+    // Handle NaN flower points
+    const currentPoints = isNaN(userData.flowerPoints) ? 10 : userData.flowerPoints;
+    const updatedPoints = currentPoints + amount;
+    
+    if (updatedPoints < 0) {
+        throw new Error('Insufficient flower points');
+    }
+    
+    await updateDoc(userRef, {
+        flowerPoints: updatedPoints
+    });
+    
+    return updatedPoints;
 } 

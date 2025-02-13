@@ -1,33 +1,54 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TradingCardView from "../../components/TradingCardView";
 import TabBar from "../../components/TabBar";
-import { getRandomCards, addCardsToCollection } from "../../firebase/db";
+import { getRandomCards, addCardsToCollection, checkLoginBonus, updateFlowerPoints } from "../../firebase/db";
 import { auth } from "../../firebase/config";
-import { TradingCard } from "../../types/trading-card";
+import { TradingCard, Rarity } from "../../types/trading-card";
 import RevealCard from "../../components/RevealCard";
+
+const DRAW_COST = 10;
 
 export default function Home() {
     const [isDrawing, setIsDrawing] = useState(false);
     const [drawnCards, setDrawnCards] = useState<Array<{ card: TradingCard, holo: boolean }>>([]);
+    const [flowerPoints, setFlowerPoints] = useState<number>(0);
+
+    useEffect(() => {
+        const initializeUserData = async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const points = await checkLoginBonus(user.uid);
+                setFlowerPoints(points);
+            }
+        };
+
+        initializeUserData();
+    }, []);
 
     const handleDrawCards = async () => {
         const user = auth.currentUser;
         if (!user) return;
+        if (flowerPoints < DRAW_COST) {
+            alert('Not enough flower points! You need 10 flower points to draw cards.');
+            return;
+        }
 
         setIsDrawing(true);
-        setDrawnCards([]); // Clear previous cards
+        setDrawnCards([]);
         
         try {
+            const updatedPoints = await updateFlowerPoints(user.uid, -DRAW_COST);
+            setFlowerPoints(updatedPoints);
+
             const newCards = getRandomCards(3);
             const userCards = newCards.map(card => ({
                 cardId: card.id,
-                holo: Math.random() < 0.1
+                holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.1
             }));
 
             await addCardsToCollection(user.uid, userCards);
             
-            // Set new cards after adding to collection
             setDrawnCards(newCards.map((card, idx) => ({
                 card,
                 holo: userCards[idx].holo
@@ -45,12 +66,15 @@ export default function Home() {
             <TabBar />
             <div className="flex flex-col items-center">
                 <h1 className="text-4xl font-bold text-gray-800 mb-4">Honey TCG</h1>
+                <div className="mb-4 text-lg">
+                    Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
+                </div>
                 <button
                     onClick={handleDrawCards}
-                    disabled={isDrawing}
-                    className="mb-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+                    disabled={isDrawing || flowerPoints < DRAW_COST}
+                    className="mb-8 bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
                 >
-                    {isDrawing ? 'Drawing...' : 'Draw 3 Cards'}
+                    {isDrawing ? 'Drawing...' : `Draw 3 Cards (${DRAW_COST} 🌻)`}
                 </button>
                 
                 {drawnCards.length > 0 && (
