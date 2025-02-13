@@ -103,6 +103,12 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
                 return "text-white";
             case CardType.Dark:
                 return "text-white";
+            case CardType.Psychic:
+                return "text-slate-900";
+            case CardType.Moon:
+                return "text-slate-900";
+            case CardType.Fighting:
+                return "text-slate-900";
             default:
                 return "text-slate-700";
         }
@@ -178,45 +184,66 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
                 onMouseMove={handleMouse}
                 onMouseLeave={handleMouseLeave}
             >
+                {/* Background holo effect */}
                 {tradingCard.holo && (
                     <motion.div
                         className="absolute inset-0 pointer-events-none"
                         style={{
                             background: gradient,
-                            mixBlendMode: "multiply",
+                            mixBlendMode: "color-dodge",
                             opacity: 0.6,
                             filter: "blur(4px)",
+                            zIndex: 0  // Place behind content
                         }}
                     />
                 )}
-                <div className="flex flex-row items-center justify-between  w-full gap-2">
-                    <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis ${cardTextColor} max-w-full ${
-                        tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
-                    }`}>
-                        {tradingCard.title}
-                    </h2>
-                    <div className="flex flex-row items-center gap-2">
-                    <div className="flex gap-1">
-                        {tradingCard.types.map((type: CardType) => (
-                            <p key={type}>{getCardTypeEmoji(type)}</p>
-                        ))}
+                
+                {/* Content container with higher z-index */}
+                <div className="relative flex flex-col items-center w-full h-full z-10">
+                    {/* Header */}
+                    <div className="flex flex-row items-center justify-between w-full gap-2">
+                        <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis ${cardTextColor} max-w-full ${
+                            tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
+                        }`}>
+                            {tradingCard.title}
+                        </h2>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="flex gap-1">
+                                {tradingCard.types.map((type: CardType) => (
+                                    <p key={type}>{getCardTypeEmoji(type)}</p>
+                                ))}
+                            </div>
+                            <p className={`text-lg ${cardTextColor} font-bold text-left`}>{tradingCard.hp}</p>
+                        </div>
                     </div>
 
-                    <p className={`text-lg ${cardTextColor}font-bold text-left`}>{tradingCard.hp}</p>
-                        
+                    {/* Image with its own holo effect container */}
+                    <div className="relative w-full mt-2">
+                        {tradingCard.holo && (
+                            <motion.div
+                                className="absolute inset-0 pointer-events-none rounded-xl"
+                                style={{
+                                    background: gradient,
+                                    mixBlendMode: "color-dodge",
+                                    opacity: 0.6,
+                                    filter: "blur(4px)",
+                                    zIndex: 1
+                                }}
+                            />
+                        )}
+                        <img
+                            src={tradingCard.img}
+                            alt={tradingCard.title}
+                            className="relative w-full h-40 object-cover rounded-xl z-0"
+                        />
                     </div>
-                </div>
 
-                <img
-                    src={tradingCard.img}
-                    alt={tradingCard.title}
-                    className="w-full h-40 object-cover rounded-xl"
-                />
+                    {/* Moves and rarity */}
                     {renderMoves(tradingCard.moves, cardTextColor)}
-
                     <p className={`text-xs px-2 py-1 rounded-md border ${getRarityStyle(tradingCard.rarity)} mt-auto`}>
                         {tradingCard.rarity}
                     </p>
+                </div>
             </motion.div>
         </div>
     );
