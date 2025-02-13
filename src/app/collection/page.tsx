@@ -1,4 +1,5 @@
 import TradingCard from "../../components/TradingCardView";
+import { masterCards } from "../../data/master-cards";
 
 export default function Home() {
     return (
@@ -12,6 +13,18 @@ export default function Home() {
                     description="Honey is a sweet and sticky substance produced by bees. It's known for its unique flavor and nutritional benefits."
                 />
             </div>
+            <div className="grid grid-cols-4 gap-4">
+                {masterCards.map((card) => (
+                    <TradingCard
+                        key={card.id}
+                        title={card.title}
+                        image={card.img}
+                        description={card.moves[0].description}
+                        holo={card.holo}
+                    />
+                ))}
+            </div>
         </div>
+        
     );
-} 
+}

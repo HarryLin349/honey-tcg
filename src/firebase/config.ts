@@ -22,8 +22,9 @@ const auth = getAuth(app);
 setPersistence(auth, browserLocalPersistence).catch((error) => {
     console.error("Error setting auth persistence:", error);
 });
-const db = getFirestore(app);
 
-export { db };
+// Initialize Firestore
+export const db = getFirestore(app);
+
 export { auth };
 export default app; 

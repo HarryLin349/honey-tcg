@@ -9,7 +9,7 @@ import {
     useMotionTemplate,
 } from "framer-motion";
 
-const TradingCard = ({ title, image, description, holo = true }) => {
+const TradingCard = ({ title, image, description, holo = false }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
