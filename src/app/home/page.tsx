@@ -44,7 +44,7 @@ export default function Home() {
             const newCards = getRandomCards(3);
             const userCards = newCards.map(card => ({
                 cardId: card.id,
-                holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.1
+                holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.85
             }));
 
             await addCardsToCollection(user.uid, userCards);

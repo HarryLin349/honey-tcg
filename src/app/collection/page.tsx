@@ -4,22 +4,27 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import TabBar from "../../components/TabBar";
 import TradingCardView from "../../components/TradingCardView";
-import { getUserCollection } from "../../firebase/db";
+import { getUserCollection, sellCard, getUserData } from "../../firebase/db";
 import { auth } from "../../firebase/config";
 import { TradingCard, Rarity } from "../../types/trading-card";
 import SortDropdown from "../../components/SortDropdown";
+import SellCardModal from "../../components/SellCardModal";
 
 export default function Collection() {
     const [cards, setCards] = useState<TradingCard[]>([]);
     const [loading, setLoading] = useState(true);
     const [sortBy, setSortBy] = useState('id');
+    const [selectedCard, setSelectedCard] = useState<TradingCard | null>(null);
+    const [flowerPoints, setFlowerPoints] = useState<number>(0);
 
     useEffect(() => {
         const loadCollection = async () => {
             const user = auth.currentUser;
             if (user) {
                 const userCards = await getUserCollection(user.uid);
+                const userData = await getUserData(user.uid);
                 setCards(userCards);
+                setFlowerPoints(userData?.flowerPoints || 0);
             }
             setLoading(false);
         };
@@ -50,6 +55,23 @@ export default function Collection() {
         });
     };
 
+    const handleSellCard = async () => {
+        if (!selectedCard || !auth.currentUser) return;
+        
+        try {
+            const updatedPoints = await sellCard(auth.currentUser.uid, selectedCard);
+            setFlowerPoints(updatedPoints);
+            
+            // Refresh the collection after selling
+            const updatedCollection = await getUserCollection(auth.currentUser.uid);
+            setCards(updatedCollection);
+            setSelectedCard(null);
+        } catch (error) {
+            console.error('Error selling card:', error);
+            alert('Failed to sell card');
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-100">
@@ -66,25 +88,34 @@ export default function Collection() {
             <TabBar />
             <div className="max-w-7xl mx-auto px-4">
                 <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">My Collection</h1>
-                {cards.length === 0 ? (
-                    <p className="text-center text-gray-500">No cards in collection yet</p>
-                ) : (
-                    <>
-                        <div className="flex justify-center mb-6">
-                            <SortDropdown value={sortBy} onChange={setSortBy} />
-                        </div>
-                        <div className="flex justify-center">
-                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-32 justify-items-center">
-                                {getSortedCards().map((card,idx) => (
-                                    <div key={idx} className="w-fit">
-                                        <TradingCardView tradingCard={card} holo={card.holo} />
-                                    </div>
-                                ))}
+                <div className="mb-4 text-lg text-center">
+                    Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
+                </div>
+                <div className="flex justify-center mb-6">
+                    <SortDropdown value={sortBy} onChange={setSortBy} />
+                </div>
+                <div className="flex justify-center">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-32 justify-items-center">
+                        {getSortedCards().map((card, idx) => (
+                            <div 
+                                key={idx} 
+                                className="w-fit cursor-pointer" 
+                                onClick={() => setSelectedCard(card)}
+                            >
+                                <TradingCardView tradingCard={card} holo={card.holo} />
                             </div>
-                        </div>
-                    </>
-                )}
+                        ))}
+                    </div>
+                </div>
             </div>
+            
+            {selectedCard && (
+                <SellCardModal
+                    card={selectedCard}
+                    onConfirm={handleSellCard}
+                    onCancel={() => setSelectedCard(null)}
+                />
+            )}
         </div>
     );
 }
