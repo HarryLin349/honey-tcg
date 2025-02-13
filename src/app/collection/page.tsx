@@ -9,6 +9,7 @@ import { auth } from "../../firebase/config";
 import { TradingCard, Rarity } from "../../types/trading-card";
 import SortDropdown from "../../components/SortDropdown";
 import SellCardModal from "../../components/SellCardModal";
+import SpecialEffectModal from "../../components/SpecialEffectModal";
 
 export default function Collection() {
     const [cards, setCards] = useState<TradingCard[]>([]);
@@ -16,6 +17,7 @@ export default function Collection() {
     const [sortBy, setSortBy] = useState('id');
     const [selectedCard, setSelectedCard] = useState<TradingCard | null>(null);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
+    const [specialEffect, setSpecialEffect] = useState<any>(null);
 
     useEffect(() => {
         const loadCollection = async () => {
@@ -59,10 +61,14 @@ export default function Collection() {
         if (!selectedCard || !auth.currentUser) return;
         
         try {
-            const updatedPoints = await sellCard(auth.currentUser.uid, selectedCard);
-            setFlowerPoints(updatedPoints);
+            const result = await sellCard(auth.currentUser.uid, selectedCard);
+            setFlowerPoints(result.updatedPoints);
             
-            // Refresh the collection after selling
+            // Show special effect if any
+            if (result.specialEffect) {
+                setSpecialEffect(result.specialEffect);
+            }
+            
             const updatedCollection = await getUserCollection(auth.currentUser.uid);
             setCards(updatedCollection);
             setSelectedCard(null);
@@ -114,6 +120,13 @@ export default function Collection() {
                     card={selectedCard}
                     onConfirm={handleSellCard}
                     onCancel={() => setSelectedCard(null)}
+                />
+            )}
+            
+            {specialEffect && (
+                <SpecialEffectModal
+                    effect={specialEffect}
+                    onClose={() => setSpecialEffect(null)}
                 />
             )}
         </div>

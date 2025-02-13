@@ -648,7 +648,7 @@ export const masterCards: TradingCard[] = [
         rarity: Rarity.Common,
         moves: [
             {
-                name: "Would you still love me?",
+                name: "Eternal love?",
                 description: "",
                 damage: "10",
                 energy: [CardType.Bug]

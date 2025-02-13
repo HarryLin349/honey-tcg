@@ -179,8 +179,17 @@ export function getCardSellPrice(card: TradingCard): number {
     return price;
 }
 
+interface SellResult {
+    updatedPoints: number;
+    specialEffect?: {
+        type: 'honeypot' | 'wheelOfFortune';
+        success: boolean;
+        holoCardName?: string;  // For wheel of fortune success case
+    };
+}
+
 // Remove card from collection and add flower points
-export async function sellCard(userId: string, cardToSell: TradingCard): Promise<number> {
+export async function sellCard(userId: string, cardToSell: TradingCard): Promise<SellResult> {
     const userCollectionRef = doc(db, 'collections', userId);
     const userCollectionSnap = await getDoc(userCollectionRef);
     
@@ -202,13 +211,60 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
     
     const updatedCards = [...collection.cards];
     updatedCards.splice(cardIndex, 1);
-    
-    // Update collection with new array
+
+    let specialEffect;
+
+    // Special case: Wheel of Fortune
+    if (cardToSell.id === 'card39') {
+        if (Math.random() < 0.25) {
+            const nonHoloCards = updatedCards.filter(card => !card.holo);
+            if (nonHoloCards.length > 0) {
+                const randomIndex = Math.floor(Math.random() * nonHoloCards.length);
+                const cardToMakeHolo = nonHoloCards[randomIndex];
+                const cardToUpdateIndex = updatedCards.findIndex(
+                    card => card.cardId === cardToMakeHolo.cardId && !card.holo
+                );
+                if (cardToUpdateIndex !== -1) {
+                    updatedCards[cardToUpdateIndex] = {
+                        ...updatedCards[cardToUpdateIndex],
+                        holo: true
+                    };
+                    // Get the card name from master cards
+                    const masterCard = masterCards.find(card => card.id === cardToMakeHolo.cardId);
+                    specialEffect = {
+                        type: 'wheelOfFortune',
+                        success: true,
+                        holoCardName: masterCard?.title
+                    };
+                }
+            }
+        } else {
+            specialEffect = {
+                type: 'wheelOfFortune',
+                success: false
+            };
+        }
+    }
+
     await updateDoc(userCollectionRef, {
         cards: updatedCards
     });
     
-    // Add flower points
-    const sellPrice = getCardSellPrice(cardToSell);
-    return await updateFlowerPoints(userId, sellPrice);
+    let sellPrice = getCardSellPrice(cardToSell);
+    
+    // Special case: Honey Pot
+    if (cardToSell.id === 'card40') {
+        sellPrice += 10;
+        specialEffect = {
+            type: 'honeypot',
+            success: true
+        };
+    }
+    
+    const updatedPoints = await updateFlowerPoints(userId, sellPrice);
+    
+    return {
+        updatedPoints,
+        specialEffect
+    };
 } 
