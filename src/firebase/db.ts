@@ -1,32 +1,49 @@
 import { db } from './config';
-import { collection, getDocs, query, where, doc, getDoc } from 'firebase/firestore';
-import { UserCollection, TradingCard } from '../types/trading-card';
+import { collection, getDocs, query, where, doc, getDoc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { UserCollection, TradingCard, UserCard } from '../types/trading-card';
 import { masterCards } from '../data/master-cards';
 
-export const getUserCollection = async (userId: string): Promise<TradingCard[]> => {
-    try {
-        // Get user's collection document
-        const userCollectionRef = doc(db, 'collections', userId);
-        const userCollectionSnap = await getDoc(userCollectionRef);
+// Get random cards from master collection
+export function getRandomCards(count: number): TradingCard[] {
+    const shuffled = [...masterCards].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+}
 
-        if (!userCollectionSnap.exists()) {
-            return [];
-        }
+// Add cards to user's collection
+export async function addCardsToCollection(userId: string, cards: UserCard[]) {
+    const userCollectionRef = doc(db, 'collections', userId);
+    const userCollectionSnap = await getDoc(userCollectionRef);
 
-        const userCollection = userCollectionSnap.data() as UserCollection;
-        
-        // Map the user's card IDs to full card data from master cards
-        return userCollection.cards.map(userCard => {
-            const masterCard = masterCards.find(card => card.id === userCard.cardId);
-            if (!masterCard) return null;
-            
-            return {
-                ...masterCard,
-                holo: userCard.holo // Override the holo property with user's version
-            };
-        }).filter((card): card is TradingCard => card !== null);
-    } catch (error) {
-        console.error('Error fetching user collection:', error);
+    if (!userCollectionSnap.exists()) {
+        // Create new collection for user
+        await setDoc(userCollectionRef, {
+            userId,
+            cards: cards
+        });
+    } else {
+        // Add to existing collection
+        await updateDoc(userCollectionRef, {
+            cards: arrayUnion(...cards)
+        });
+    }
+}
+
+// Get user's collection with full card details
+export async function getUserCollection(userId: string): Promise<TradingCard[]> {
+    const userCollectionRef = doc(db, 'collections', userId);
+    const userCollectionSnap = await getDoc(userCollectionRef);
+
+    if (!userCollectionSnap.exists()) {
         return [];
     }
-}; 
+
+    const userCollection = userCollectionSnap.data();
+    return userCollection.cards.map((userCard: UserCard) => {
+        const masterCard = masterCards.find(card => card.id === userCard.cardId);
+        if (!masterCard) return null;
+        return {
+            ...masterCard,
+            holo: userCard.holo
+        };
+    }).filter((card): card is TradingCard => card !== null);
+} 

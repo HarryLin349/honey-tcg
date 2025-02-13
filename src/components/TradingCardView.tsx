@@ -1,4 +1,5 @@
 "use client";
+import React from 'react';
 import { TradingCard, Move, CardType, Rarity, getCardTypeEmoji } from "../types/trading-card";
 import {
     motion,
@@ -175,7 +176,7 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
             style={{ perspective: "1700px" }}
         >
             <motion.div
-                className={`relative w-64 h-96 ${backgroundColor} shadow-lg rounded-2xl p-4 flex flex-col items-center text-center border border-gray-300 overflow-hidden`}
+                className={`relative w-64 h-96 ${backgroundColor} shadow-lg rounded-2xl px-4 pb-4 pt-3 flex flex-col items-center text-center border border-gray-300 overflow-hidden`}
                 style={{
                     transformStyle: "preserve-3d",
                     rotateX: rotateX,
@@ -218,7 +219,7 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
                     </div>
 
                     {/* Image with its own holo effect container */}
-                    <div className="relative w-full mt-2">
+                    <div className="relative w-full mt-1">
                         {tradingCard.holo && (
                             <motion.div
                                 className="absolute inset-0 pointer-events-none rounded-xl"

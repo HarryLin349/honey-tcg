@@ -1,4 +1,6 @@
 "use client";
+import React from 'react';
+
 import { useEffect, useState } from 'react';
 import TabBar from "../../components/TabBar";
 import TradingCardView from "../../components/TradingCardView";
@@ -42,9 +44,11 @@ export default function Collection() {
                 {cards.length === 0 ? (
                     <p className="text-center text-gray-500">No cards in collection yet</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-32 justify-items-center">
                         {cards.map((card) => (
-                            <TradingCardView key={card.id} tradingCard={card} holo={card.holo} />
+                            <div key={card.id} className="w-fit">
+                                <TradingCardView tradingCard={card} holo={card.holo} />
+                            </div>
                         ))}
                     </div>
                 )}
