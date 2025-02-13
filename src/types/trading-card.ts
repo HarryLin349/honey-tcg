@@ -61,14 +61,15 @@ export const getCardTypeEmoji = (type: CardType): string => {
 };
 
 export enum Rarity {
-    Common = 'common',
-    Uncommon = 'uncommon',
-    Rare = 'rare',
-    Legendary = 'legendary'
+    Common = 'Common',
+    Uncommon = 'Uncommon',
+    Rare = '💫 Rare 💫',
+    Legendary = '🌈 Legendary 🌈'
 }
 
 export interface TradingCard {
     id: string;
+    hp: number;
     title: string;
     types: CardType[];
     img: string;
