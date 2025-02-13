@@ -48,7 +48,13 @@ function getRarityStyle(rarity: Rarity): string {
     }
 }
 
-const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo: boolean }) => {
+interface TradingCardViewProps {
+    tradingCard: TradingCard;
+    holo: boolean;
+    disabled?: boolean;  // New prop
+}
+
+const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, disabled = false }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
@@ -176,7 +182,8 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
             style={{ perspective: "1700px" }}
         >
             <motion.div
-                className={`relative w-64 h-96 ${backgroundColor} shadow-lg rounded-2xl px-4 pb-4 pt-3 flex flex-col items-center text-center border border-gray-300 overflow-hidden`}
+                className={`relative w-64 h-96 ${backgroundColor} shadow-lg rounded-2xl px-4 pb-4 pt-3 flex flex-col items-center text-center border border-gray-300 overflow-hidden
+                    ${disabled ? 'opacity-50 grayscale' : ''}`}
                 style={{
                     transformStyle: "preserve-3d",
                     rotateX: rotateX,
