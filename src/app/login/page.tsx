@@ -13,6 +13,12 @@ export default function Login() {
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        console.log("API KEY", process.env.NEXT_PUBLIC_FIREBASE_API_KEY)
+        console.log("AUTH DOMAIN", process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN)
+        console.log("PROJECT ID", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+        console.log("STORAGE BUCKET", process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET)
+        console.log("MESSAGING SENDER ID", process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID)
+        console.log("APP ID", process.env.NEXT_PUBLIC_FIREBASE_APP_ID)
         e.preventDefault();
         try {
             if (isLogin) {
@@ -25,6 +31,7 @@ export default function Login() {
             setError(error.message);
         }
     };
+
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
