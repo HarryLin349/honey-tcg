@@ -24,9 +24,9 @@ function renderMove(move: Move) {
     );
 }
 
-function renderMoves(moves: Move[]) {
+function renderMoves(moves: Move[], textColor: string = "text-slate-700") {
     return (
-        <div className="flex flex-col w-full gap-2 mt-4">
+        <div className={`flex flex-col w-full gap-1 mt-4 ${textColor}`}>
             {moves.map(renderMove)}
         </div>
     );
@@ -95,6 +95,20 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
         y.set(0);
     }
 
+    function getCardTextColor( pType: CardType): string {
+        switch (pType) {
+            case CardType.Ghost:
+                return "text-white";
+            case CardType.Dragon:
+                return "text-white";
+            case CardType.Dark:
+                return "text-white";
+            default:
+                return "text-slate-700";
+        }
+                
+    }
+
     function getCardBackgroundColor({ primaryType }: { primaryType: CardType }): string {
         switch (primaryType) {
             case CardType.Fire:
@@ -146,6 +160,7 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
     }
 
     let primaryType = tradingCard.types[0];
+    let cardTextColor = getCardTextColor(primaryType);
     let backgroundColor = getCardBackgroundColor({ primaryType });
 
     return (
@@ -175,17 +190,21 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
                     />
                 )}
                 <div className="flex flex-row items-center justify-between  w-full gap-2">
+                    <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis ${cardTextColor} max-w-full ${
+                        tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
+                    }`}>
+                        {tradingCard.title}
+                    </h2>
+                    <div className="flex flex-row items-center gap-2">
                     <div className="flex gap-1">
                         {tradingCard.types.map((type: CardType) => (
                             <p key={type}>{getCardTypeEmoji(type)}</p>
                         ))}
                     </div>
-                    <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis max-w-full ${
-                        tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
-                    }`}>
-                        {tradingCard.title}
-                    </h2>
-                    <p className="text-lg font-bold text-left">{tradingCard.hp}</p>
+
+                    <p className={`text-lg ${cardTextColor}font-bold text-left`}>{tradingCard.hp}</p>
+                        
+                    </div>
                 </div>
 
                 <img
@@ -193,7 +212,7 @@ const TradingCardView = ({ tradingCard, holo }: { tradingCard: TradingCard, holo
                     alt={tradingCard.title}
                     className="w-full h-40 object-cover rounded-xl"
                 />
-                    {renderMoves(tradingCard.moves)}
+                    {renderMoves(tradingCard.moves, cardTextColor)}
 
                     <p className={`text-xs px-2 py-1 rounded-md border ${getRarityStyle(tradingCard.rarity)} mt-auto`}>
                         {tradingCard.rarity}

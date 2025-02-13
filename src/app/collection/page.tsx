@@ -1,28 +1,54 @@
+"use client";
+import { useEffect, useState } from 'react';
+import TabBar from "../../components/TabBar";
 import TradingCardView from "../../components/TradingCardView";
-import { masterCards } from "../../data/master-cards";
+import { getUserCollection } from "../../firebase/db";
+import { auth } from "../../firebase/config";
+import { TradingCard } from "../../types/trading-card";
 
-export default function Home() {
+export default function Collection() {
+    const [cards, setCards] = useState<TradingCard[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadCollection = async () => {
+            const user = auth.currentUser;
+            if (user) {
+                const userCards = await getUserCollection(user.uid);
+                setCards(userCards);
+            }
+            setLoading(false);
+        };
+
+        loadCollection();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-100">
+                <TabBar />
+                <div className="flex justify-center items-center h-64">
+                    <p className="text-gray-500">Loading collection...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4">Honey TCG</h1>
-            <p className="text-gray-600">placeholder</p>
-            {/* <div>
-                <TradingCard
-                    title="Honey"
-                    image="https://oyster.ignimgs.com/mediawiki/apis.ign.com/balatro/e/ef/Joker.png"
-                    description="Honey is a sweet and sticky substance produced by bees. It's known for its unique flavor and nutritional benefits."
-                />
-            </div> */}
-            <div className="grid grid-cols-4 gap-4">
-                {masterCards.map((card) => (
-                    <TradingCardView
-                        key={card.id}
-                        tradingCard={card}
-                        holo={card.holo}
-                    />
-                ))}
+        <div className="min-h-screen bg-gray-100">
+            <TabBar />
+            <div className="max-w-7xl mx-auto px-4">
+                <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">My Collection</h1>
+                {cards.length === 0 ? (
+                    <p className="text-center text-gray-500">No cards in collection yet</p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {cards.map((card) => (
+                            <TradingCardView key={card.id} tradingCard={card} holo={card.holo} />
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
-        
     );
 }
