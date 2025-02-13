@@ -754,8 +754,69 @@ export const masterCards: TradingCard[] = [
         ],
         holo: false
     },
-
-
+    {
+        id: "card38",
+        hp: 70,
+        title: "Honeybears",
+        types: [CardType.Love],
+        img: "https://i.pinimg.com/564x/f0/b7/38/f0b738c906c3cfe386a3cd2aa23ebc1f.jpg",
+        rarity: Rarity.Rare,
+        moves: [
+            {
+                name: "Chew",
+                description: "Flip a coin. If heads, deal 10 more damage.",
+                damage: "15",
+                energy: [CardType.Normal, CardType.Normal]
+            },
+            {
+                name: "Bear Hug",
+                description: "The opposing card can't switch out until this card is defeated.",
+                damage: "10",
+                energy: [CardType.Normal]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card39",
+        hp: 70,
+        title: "Wheel of Fortune",
+        types: [CardType.Moon],
+        img: "https://i.ytimg.com/vi/OfxEPLWjFKE/maxresdefault.jpg",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Wheel of Fortune",
+                description: "Selling this card has a 1/4 chance to add holo to a random card in your collection.",
+                damage: "",
+                energy: []
+            },
+            {
+                name: "Nope!",
+                description: "When this card is defeated, the opposing card takes 40 damage.",
+                damage: "",
+                energy: []
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card40",
+        hp: 70,
+        title: "Honey Pot",
+        types: [CardType.Sun, CardType.Grass],
+        img: "https://i.pinimg.com/1200x/e4/18/09/e418093d88e2243f2ff24702bf355780.jpg",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Harvest",
+                description: "Selling this card gives you 10 flower points.",
+                damage: "",
+                energy: []
+            },
+        ],
+        holo: false
+    },
 ];
 
 export default masterCards;

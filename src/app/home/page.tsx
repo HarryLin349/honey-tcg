@@ -44,7 +44,7 @@ export default function Home() {
             const newCards = getRandomCards(3);
             const userCards = newCards.map(card => ({
                 cardId: card.id,
-                holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.85
+                holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.085
             }));
 
             await addCardsToCollection(user.uid, userCards);
@@ -69,6 +69,14 @@ export default function Home() {
                 <div className="mb-4 text-lg">
                     Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
                 </div>
+                <div className="text-sm text-gray-600 mb-6 text-center">
+                    Card Rates:<br />
+                    <span className="text-gray-500">68% Common</span> • 
+                    <span className="text-emerald-500"> 20% Uncommon</span> • 
+                    <span className="text-blue-500"> 10% Rare</span> • 
+                    <span className="text-amber-500"> 2% Legendary</span>
+                </div>
+
                 <button
                     onClick={handleDrawCards}
                     disabled={isDrawing || flowerPoints < DRAW_COST}

@@ -20,16 +20,15 @@ export function getRandomCards(count: number): TradingCard[] {
         const roll = Math.random() * 100; // Roll 0-100
         
         let selectedCard: TradingCard;
-        if (roll < 1) { // 1% Legendary
+        if (roll < 2) { // 2% Legendary
             selectedCard = legendaryCards[Math.floor(Math.random() * legendaryCards.length)];
-        } else if (roll < 10) { // 9% Rare
+        } else if (roll < 12) { // 10% Rare
             selectedCard = rareCards[Math.floor(Math.random() * rareCards.length)];
-        } else if (roll < 30) { // 20% Uncommon
+        } else if (roll < 32) { // 20% Uncommon
             selectedCard = uncommonCards[Math.floor(Math.random() * uncommonCards.length)];
         } else { // 70% Common
             selectedCard = commonCards[Math.floor(Math.random() * commonCards.length)];
         }
-        
         drawnCards.push(selectedCard);
     }
     
