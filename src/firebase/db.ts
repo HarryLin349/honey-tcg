@@ -49,8 +49,9 @@ export async function addCardsToCollection(userId: string, cards: UserCard[]) {
         });
     } else {
         // Add to existing collection
+        const existingCollection = userCollectionSnap.data() as UserCollection;
         await updateDoc(userCollectionRef, {
-            cards: arrayUnion(...cards)
+            cards: [...existingCollection.cards, ...cards]
         });
     }
 }
