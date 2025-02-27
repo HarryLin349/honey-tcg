@@ -817,6 +817,144 @@ export const masterCards: TradingCard[] = [
         ],
         holo: false
     },
+    {
+        id: "card41",
+        hp: 70,
+        title: "Honeys Vs. The World",
+        types: [CardType.Dark, CardType.Star],
+        img: "https://i.imgur.com/V4FCfeV.png",
+        rarity: Rarity.Legendary,
+        moves: [
+            {
+                name: "Wallpaper",
+                description: "This card may remain in your bench without taking a bench slot",
+                damage: "",
+                energy: []
+            },
+            {
+                name: "Dark Mode",
+                description: "Pick an ally or enemy, and change their type to Dark",
+                damage: "50",
+                energy: [CardType.Dark, CardType.Star]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card42",
+        hp: 40,
+        title: "Winter Clothes",
+        types: [CardType.Ice],
+        img: "https://i.imgur.com/9Qk2L9Y.jpeg",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Bundle Up",
+                description: "This card takes 1/2 damage until their next turn",
+                damage: "5",
+                energy: [CardType.Ice, CardType.Ice]
+            },
+            {
+                name: "Outdoor Walk",
+                description: "",
+                damage: "15",
+                energy: [CardType.Ice]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card43",
+        hp: 30,
+        title: "Smeck",
+        types: [CardType.Love],
+        img: "https://i.imgur.com/jkSX6f0.png",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Muah",
+                description: "Heal 5 HP",
+                damage: "5",
+                energy: [CardType.Love]
+            },
+            {
+                name: "Huam",
+                description: "",
+                damage: "10",
+                energy: [CardType.Love]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card43",
+        hp: 30,
+        title: "Honeykawa",
+        types: [CardType.Fairy],
+        img: "https://i.imgur.com/eIdgbUZ.jpeg",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "waddahonie",
+                description: "Flip a coin. If heads, confuse the opponent",
+                damage: "5",
+                energy: [CardType.Fairy]
+            },
+            {
+                name: "ooh ooh na na ooh na",
+                description: "waddahonie",
+                damage: "10",
+                energy: [CardType.Normal]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card44",
+        hp: 30,
+        title: "Phone Stickers",
+        types: [CardType.Electric, CardType.Steel],
+        img: "https://i.imgur.com/haFJGUX.png",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Sticker",
+                description: "The target can no longer switch out",
+                damage: "5",
+                energy: [CardType.Steel]
+            },
+            {
+                name: "Screentime",
+                description: "Deals 5 less damage for each consecutive use",
+                damage: "15",
+                energy: [CardType.Electric]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card45",
+        hp: 35,
+        title: "Slobber",
+        types: [CardType.Water],
+        img: "https://i.imgur.com/K88PDvs.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Scare",
+                description: "Flip a coin. If heads, switch this target out with an ally on its bench",
+                damage: "5",
+                energy: [CardType.Water]
+            },
+            {
+                name: "Slobber",
+                description: "",
+                damage: "10",
+                energy: [CardType.Water]
+            },
+        ],
+        holo: false
+    },
 ];
 
 export default masterCards;
