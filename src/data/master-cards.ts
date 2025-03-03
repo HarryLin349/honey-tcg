@@ -239,7 +239,7 @@ export const masterCards: TradingCard[] = [
                 energy: [CardType.Love]
             },
             {
-                name: "✋ Bum Bum Bum",
+                name: "✋ Kin cha na",
                 description: "If the preceding move was a dance, double this move's damage",
                 damage: "20",
                 energy: [CardType.Star]
@@ -506,7 +506,7 @@ export const masterCards: TradingCard[] = [
         hp: 40,
         title: "Poki",
         types: [CardType.Flying, CardType.Fighting],
-        img: "https://i.imgur.com/q3jibgZ.png",
+        img: "https://i.imgur.com/rv9O9lX.png",
         rarity: Rarity.Uncommon,
         moves: [
             {
