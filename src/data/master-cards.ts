@@ -219,7 +219,7 @@ export const masterCards: TradingCard[] = [
                 name: "Dance",
                 description: "Ooh, Ooh, Na Na Ooh Na!",
                 damage: "33",
-                energy: [CardType.Normal,CardType.Normal,CardType.Normal]
+                energy: [CardType.Normal, CardType.Normal, CardType.Normal]
             },
         ],
         holo: false
@@ -354,7 +354,7 @@ export const masterCards: TradingCard[] = [
                 name: "Double Trouble",
                 description: "This is getting out of hand, now there are two of them!",
                 damage: "20",
-                energy: [CardType.Normal,CardType.Normal]
+                energy: [CardType.Normal, CardType.Normal]
             },
             {
                 name: "Yap Sesh",
@@ -377,7 +377,7 @@ export const masterCards: TradingCard[] = [
                 name: "Boil",
                 description: "3 Minutes till ready...",
                 damage: "20",
-                energy: [CardType.Water,CardType.Fire]
+                energy: [CardType.Water, CardType.Fire]
             },
             {
                 name: "Splash",
@@ -951,6 +951,23 @@ export const masterCards: TradingCard[] = [
                 description: "",
                 damage: "10",
                 energy: [CardType.Water]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card46",
+        hp: 25,
+        title: "Let's go gambling!",
+        types: [CardType.Star],
+        img: "https://media.tenor.com/NqUIisg1N_kAAAAe/lets-go-gambling.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "I can't stop winning!",
+                description: "When you sell this card, gain a random amount of points from 0-10.",
+                damage: "5",
+                energy: [CardType.Star]
             },
         ],
         holo: false

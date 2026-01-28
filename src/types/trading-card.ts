@@ -91,8 +91,9 @@ export interface UserCollection {
 export interface SellResult {
     updatedPoints: number;
     specialEffect?: {
-        type: 'honeypot' | 'wheelOfFortune';
+        type: 'honeypot' | 'wheelOfFortune' | 'gambling';
         success: boolean;
         holoCardName?: string;
+        bonusPoints?: number;
     };
 }

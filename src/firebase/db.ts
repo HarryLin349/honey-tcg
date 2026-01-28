@@ -253,6 +253,17 @@ export async function sellCard(userId: string, cardToSell: TradingCard): Promise
             success: true
         };
     }
+
+    // Special case: Let's go gambling!
+    if (cardToSell.id === 'card46') {
+        const bonusPoints = Math.floor(Math.random() * 11);
+        sellPrice += bonusPoints;
+        specialEffect = {
+            type: 'gambling' as const,
+            success: true,
+            bonusPoints
+        };
+    }
     
     const updatedPoints = await updateFlowerPoints(userId, sellPrice);
     

@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TradingCard, Move, CardType, Rarity, getCardTypeEmoji } from "../types/trading-card";
 import {
     motion,
@@ -52,11 +52,13 @@ interface TradingCardViewProps {
     tradingCard: TradingCard;
     holo: boolean;
     disabled?: boolean;  // New prop
+    showSparkles?: boolean;
 }
 
-const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, disabled = false }) => {
+const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, disabled = false, showSparkles = false }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
+    const [sparkles, setSparkles] = useState(() => createSparkles());
 
     // Add spring physics
     const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), {
@@ -101,6 +103,22 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
         x.set(0);
         y.set(0);
     }
+
+    function createSparkles() {
+        return [
+            { left: `${10 + Math.random() * 20}%`, top: `${12 + Math.random() * 20}%`, size: 20 + Math.random() * 8, delay: 0 },
+            { left: `${55 + Math.random() * 30}%`, top: `${22 + Math.random() * 20}%`, size: 16 + Math.random() * 6, delay: 0.3 },
+            { left: `${30 + Math.random() * 30}%`, top: `${60 + Math.random() * 25}%`, size: 18 + Math.random() * 8, delay: 0.6 },
+        ];
+    }
+
+    useEffect(() => {
+        if (!holo || !showSparkles) return;
+        const id = setInterval(() => {
+            setSparkles(createSparkles());
+        }, 1200);
+        return () => clearInterval(id);
+    }, [holo, showSparkles]);
 
     function getCardTextColor( pType: CardType): string {
         switch (pType) {
@@ -193,8 +211,41 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
                 onMouseMove={handleMouse}
                 onMouseLeave={handleMouseLeave}
             >
+                {holo && showSparkles && (
+                    <div className="absolute inset-0 pointer-events-none z-20">
+                        {sparkles.map((sparkle, index) => (
+                            <motion.div
+                                key={index}
+                                className="absolute"
+                                style={{
+                                    left: sparkle.left,
+                                    top: sparkle.top,
+                                    width: sparkle.size,
+                                    height: sparkle.size,
+                                    background:
+                                        "radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.35) 45%, rgba(255,255,255,0.0) 70%)",
+                                    clipPath:
+                                        "polygon(50% 0%, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0% 50%, 40% 40%)",
+                                    mixBlendMode: "screen",
+                                }}
+                                animate={{
+                                    scale: [0.6, 1.2, 0.6],
+                                    opacity: [0.2, 0.9, 0.2],
+                                    x: [0, 6, 0],
+                                    y: [0, -6, 0],
+                                }}
+                                transition={{
+                                    duration: 1.3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: sparkle.delay,
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
                 {/* Background holo effect */}
-                {tradingCard.holo && (
+                {holo && (
                     <motion.div
                         className="absolute inset-0 pointer-events-none"
                         style={{
@@ -228,7 +279,7 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
 
                     {/* Image with its own holo effect container */}
                     <div className="relative w-full mt-1">
-                        {tradingCard.holo && (
+                        {holo && (
                             <motion.div
                                 className="absolute inset-0 pointer-events-none rounded-xl"
                                 style={{

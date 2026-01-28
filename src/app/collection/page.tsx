@@ -18,9 +18,10 @@ export default function Collection() {
     const [selectedCard, setSelectedCard] = useState<TradingCard | null>(null);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
     const [specialEffect, setSpecialEffect] = useState<{
-        type: 'honeypot' | 'wheelOfFortune';
+        type: 'honeypot' | 'wheelOfFortune' | 'gambling';
         success: boolean;
         holoCardName?: string;
+        bonusPoints?: number;
     } | null>(null);
 
     useEffect(() => {

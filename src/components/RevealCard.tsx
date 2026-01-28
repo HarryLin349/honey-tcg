@@ -20,7 +20,7 @@ const RevealCard: React.FC<RevealCardProps> = ({ card, holo }) => {
             style={{ perspective: 1000 }}
         >
             {isRevealed ? (
-                <TradingCardView tradingCard={card} holo={holo} />
+                <TradingCardView tradingCard={card} holo={holo} showSparkles={holo} />
             ) : (
                 <div className="w-64 h-96 bg-gradient-to-br from-yellow-400 to-amber-600 rounded-2xl flex items-center justify-center text-6xl text-white shadow-lg">
                     🍯

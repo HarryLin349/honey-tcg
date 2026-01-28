@@ -2,9 +2,10 @@ import React from 'react';
 
 interface SpecialEffectModalProps {
     effect: {
-        type: 'honeypot' | 'wheelOfFortune';
+        type: 'honeypot' | 'wheelOfFortune' | 'gambling';
         success: boolean;
         holoCardName?: string;
+        bonusPoints?: number;
     };
     onClose: () => void;
 }
@@ -18,6 +19,9 @@ const SpecialEffectModal: React.FC<SpecialEffectModalProps> = ({ effect, onClose
             return effect.success
                 ? `✨ The Wheel of Fortune made your ${effect.holoCardName} holo! ✨`
                 : "❌ Nope!";
+        }
+        if (effect.type === 'gambling') {
+            return `🎰 Let's go gambling! You won ${effect.bonusPoints ?? 0} extra flower points! 🌻`;
         }
     };
 
