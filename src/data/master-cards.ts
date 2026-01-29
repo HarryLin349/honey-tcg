@@ -105,7 +105,7 @@ export const masterCards: TradingCard[] = [
         holo: false
     },
     {
-        id: "card6",
+        id: "card699",
         hp: 70,
         title: "Olu & Grimmy",
         types: [CardType.Dark, CardType.Love],
@@ -128,7 +128,7 @@ export const masterCards: TradingCard[] = [
         holo: true
     },
     {
-        id: "card7",
+        id: "card799",
         hp: 50,
         title: "🫣",
         types: [CardType.Love],
@@ -163,29 +163,6 @@ export const masterCards: TradingCard[] = [
                 description: "",
                 damage: "20",
                 energy: [CardType.Grass, CardType.Grass]
-            },
-        ],
-        holo: false
-    },
-    {
-        id: "card9",
-        hp: 30,
-        title: "Hamburger Harry",
-        types: [CardType.Ground],
-        img: "https://i.imgur.com/dJouKI6.jpeg",
-        rarity: Rarity.Common,
-        moves: [
-            {
-                name: "Ground Beef",
-                description: "",
-                damage: "10",
-                energy: [CardType.Ground]
-            },
-            {
-                name: "Combo Meal",
-                description: "Flip three coins. Deal 5 damage for each heads.",
-                damage: "",
-                energy: [CardType.Ground]
             },
         ],
         holo: false
@@ -247,6 +224,53 @@ export const masterCards: TradingCard[] = [
         ],
         holo: false
     },
+    {
+        id: "card12b",
+        hp: 65,
+        title: "Chiiiikawaaas",
+        types: [CardType.Moon, CardType.Fairy],
+        img: "https://media1.tenor.com/m/VyOd9eHgPzYAAAAC/chiikawa-chiikawa-magical.gif",
+        rarity: Rarity.Legendary,
+        moves: [
+            {
+                name: "Dance",
+                description: "Ooh, Ooh, Na Na Ooh Na!",
+                damage: "Bree!",
+                energy: [CardType.Moon]
+            },
+            {
+                name: "ちいかわ ❤️",
+                description: "Once played, you may draw another Chiikawa card to your hand.",
+                damage: "20",
+                energy: [CardType.Fairy]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card12c",
+        hp: 30,
+        title: "Hamburger Harry",
+        types: [CardType.Ground],
+        img: "https://i.imgur.com/dJouKI6.jpeg",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Ground Beef",
+                description: "",
+                damage: "10",
+                energy: [CardType.Ground]
+            },
+            {
+                name: "Combo Meal",
+                description: "Flip three coins. Deal 5 damage for each heads.",
+                damage: "",
+                energy: [CardType.Ground]
+            },
+        ],
+        holo: false
+    },
+
     {
         id: "card13",
         hp: 15,
@@ -462,7 +486,7 @@ export const masterCards: TradingCard[] = [
 
 
     {
-        id: "card22",
+        id: "card9b",
         hp: 20,
         title: "Dapper Harry",
         types: [CardType.Dark],
@@ -479,7 +503,7 @@ export const masterCards: TradingCard[] = [
         holo: false
     },
     {
-        id: "card23",
+        id: "card9",
         hp: 20,
         title: "Kiss",
         types: [CardType.Fighting, CardType.Love],
@@ -972,6 +996,257 @@ export const masterCards: TradingCard[] = [
         ],
         holo: false
     },
+    {
+        id: "card48",
+        hp: 30,
+        title: "Sweet Honey",
+        types: [CardType.Fairy],
+        img: "/cards/sweet.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Quiz Master",
+                description: "If another card with Quiz Master is on the board, double this damage.",
+                damage: "15",
+                energy: [CardType.Fairy]
+            },
+            {
+                name: "So sweet!",
+                description: "Flip a coin. If heads, 5 HP.",
+                damage: "10",
+                energy: [CardType.Fairy]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card49",
+        hp: 30,
+        title: "Scaray Honey",
+        types: [CardType.Dark],
+        img: "/cards/scaray.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Quiz Master",
+                description: "If another card with Quiz Master is on the board, double this damage.",
+                damage: "15",
+                energy: [CardType.Dark]
+            },
+            {
+                name: "So Scaray!!",
+                description: "Flip a coin. If heads, the target is paralyzed.",
+                damage: "10",
+                energy: [CardType.Dark]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card50",
+        hp: 30,
+        title: "Sillay Honey",
+        types: [CardType.Star],
+        img: "/cards/sillay.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Quiz Master",
+                description: "If another card with Quiz Master is on the board, double this damage.",
+                damage: "15",
+                energy: [CardType.Star]
+            },
+            {
+                name: "So Sillayy",
+                description: "Flip a coin. If heads, the target is confused.",
+                damage: "10",
+                energy: [CardType.Star]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card51",
+        hp: 30,
+        title: "Suave Honey",
+        types: [CardType.Love],
+        img: "/cards/suave.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Quiz Master",
+                description: "If another card with Quiz Master is on the board, double this damage.",
+                damage: "15",
+                energy: [CardType.Love]
+            },
+            {
+                name: "So Suave..",
+                description: "Flip a coin. If heads, the target is charmed.",
+                damage: "10",
+                energy: [CardType.Love]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card52",
+        hp: 30,
+        title: "eheheh",
+        types: [CardType.Love],
+        img: "https://i1.sndcdn.com/artworks-fGTyAoQDpAAoN3km-7v9uzw-t500x500.jpg",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "ehehe",
+                description: "If you haven't been damaged yet, double this power.",
+                damage: "10",
+                energy: [CardType.Love]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card53",
+        hp: 15,
+        title: "Chewing Honay",
+        types: [CardType.Normal],
+        img: "/cards/chewinghonay1.png",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Chew Chew",
+                description: "Does 5 more damage for each successive use.",
+                damage: "5",
+                energy: [CardType.Normal]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card54",
+        hp: 45,
+        title: "Kuchipatchi",
+        types: [CardType.Bug, CardType.Star],
+        img: "/cards/kuchi.png",
+        rarity: Rarity.Rare,
+        moves: [
+            {
+                name: "Compress",
+                description: "Halve the first instance of damage over 10 to this card.",
+                damage: "",
+                energy: [CardType.Bug]
+            },
+            {
+                name: "Squidge",
+                description: "Does 5 more damage for each successive use.",
+                damage: "5",
+                energy: [CardType.Star]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card55",
+        hp: 20,
+        title: "Peashooter",
+        types: [CardType.Grass],
+        img: "/cards/pea.png",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Shoot Pea",
+                description: "",
+                damage: "10",
+                energy: [CardType.Grass]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card55",
+        hp: 20,
+        title: "Sunflower",
+        types: [CardType.Grass, CardType.Sun],
+        img: "https://plantsvszombies.wiki.gg/images/Sunflower-Almanac.png?37a7dd",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Make Sun",
+                description: "Generate a ☀️ energy.",
+                damage: "5",
+                energy: [CardType.Grass]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card56",
+        hp: 20,
+        title: "Mt Rainier",
+        types: [CardType.Rock, CardType.Ice],
+        img: "/cards/paintrain.png",
+        rarity: Rarity.Common,
+        moves: [
+            {
+                name: "Peak",
+                description: "This deals either Rock or Ice, your choosing.",
+                damage: "10",
+                energy: [CardType.Rock, CardType.Ice]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card57",
+        hp: 30,
+        title: "Sunflower Field",
+        types: [CardType.Grass, CardType.Sun],
+        img: "/cards/paintsun.png",
+        rarity: Rarity.Uncommon,
+        moves: [
+            {
+                name: "Sunny Field",
+                description: "",
+                damage: "15",
+                energy: [CardType.Sun]
+            },
+            {
+                name: "Gentle Wind",
+                description: "You may discard one card from your hand and draw another.",
+                damage: "10",
+                energy: [CardType.Flying]
+            },
+        ],
+        holo: false
+    },
+    {
+        id: "card58",
+        hp: 50,
+        title: "Costco Hotdog",
+        types: [CardType.Fighting],
+        img: "/cards/paintcostco.png",
+        rarity: Rarity.Rare,
+        moves: [
+            {
+                name: "Affordable",
+                description: "While this card is active, you may reduce a move's energy cost by 1.",
+                damage: "",
+                energy: []
+            },
+            {
+                name: "Glizzy with the Bev!?",
+                description: "Flip a coin. If heads, heal for 5.",
+                damage: "15.0",
+                energy: [CardType.Fighting]
+            },
+        ],
+        holo: false
+    },
+
+
+
+
+
 ];
 
 export default masterCards;

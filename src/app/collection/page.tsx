@@ -39,14 +39,19 @@ export default function Collection() {
         loadCollection();
     }, []);
 
+    const getCardIdNumber = (id: string) => {
+        const match = id.match(/\d+/);
+        return match ? Number(match[0]) : Number.POSITIVE_INFINITY;
+    };
+
     const getSortedCards = () => {
         return [...cards].sort((a, b) => {
             switch (sortBy) {
                 case 'id':
-                    return a.id.localeCompare(b.id);
+                    return getCardIdNumber(a.id) - getCardIdNumber(b.id);
                 case 'type':
                     const typeCompare = a.types[0].localeCompare(b.types[0]);
-                    return typeCompare !== 0 ? typeCompare : a.id.localeCompare(b.id);
+                    return typeCompare !== 0 ? typeCompare : getCardIdNumber(a.id) - getCardIdNumber(b.id);
                 case 'rarity':
                     const rarityOrder = {
                         [Rarity.Legendary]: 4,
@@ -55,7 +60,7 @@ export default function Collection() {
                         [Rarity.Common]: 1
                     };
                     const rarityCompare = rarityOrder[a.rarity] - rarityOrder[b.rarity];
-                    return rarityCompare !== 0 ? rarityCompare : a.id.localeCompare(b.id);
+                    return rarityCompare !== 0 ? rarityCompare : getCardIdNumber(a.id) - getCardIdNumber(b.id);
                 default:
                     return 0;
             }
