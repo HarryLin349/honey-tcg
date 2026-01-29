@@ -887,7 +887,7 @@ export const masterCards: TradingCard[] = [
         holo: false
     },
     {
-        id: "card43",
+        id: "card43Honey",
         hp: 30,
         title: "Honeykawa",
         types: [CardType.Fairy],
