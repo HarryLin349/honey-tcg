@@ -61,13 +61,13 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
     const [sparkles, setSparkles] = useState(() => createSparkles());
 
     // Add spring physics
-    const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [15, -15]), {
-        stiffness: 700,
-        damping: 30,
+    const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [18, -18]), {
+        stiffness: 800,
+        damping: 26,
     });
-    const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-15, 15]), {
-        stiffness: 700,
-        damping: 30,
+    const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-18, 18]), {
+        stiffness: 800,
+        damping: 26,
     });
 
     // Create a motion value for the gradient rotation
