@@ -28,7 +28,11 @@ function renderMove(move: Move) {
 function renderMoves(moves: Move[], textColor: string = "text-slate-700") {
     return (
         <div className={`flex flex-col w-full gap-1 mt-4 ${textColor}`}>
-            {moves.map(renderMove)}
+            {moves.map((move, idx) => (
+                <div key={`${move.name}-${idx}`}>
+                    {renderMove(move)}
+                </div>
+            ))}
         </div>
     );
 }
@@ -55,7 +59,12 @@ interface TradingCardViewProps {
     showSparkles?: boolean;
 }
 
-const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, disabled = false, showSparkles = false }) => {
+const TradingCardView: React.FC<TradingCardViewProps> = ({
+    tradingCard,
+    holo,
+    disabled = false,
+    showSparkles = false
+}) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
     const [sparkles, setSparkles] = useState(() => createSparkles());
@@ -120,7 +129,7 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
         return () => clearInterval(id);
     }, [holo, showSparkles]);
 
-    function getCardTextColor( pType: CardType): string {
+    function getCardTextColor(pType: CardType): string {
         switch (pType) {
             case CardType.Ghost:
                 return "text-white";
@@ -137,7 +146,7 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
             default:
                 return "text-slate-700";
         }
-                
+
     }
 
     function getCardBackgroundColor({ primaryType }: { primaryType: CardType }): string {
@@ -257,14 +266,13 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
                         }}
                     />
                 )}
-                
+
                 {/* Content container with higher z-index */}
                 <div className="relative flex flex-col items-center w-full h-full z-10">
                     {/* Header */}
                     <div className="flex flex-row items-center justify-between w-full gap-2">
-                        <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis ${cardTextColor} max-w-full ${
-                            tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
-                        }`}>
+                        <h2 className={`font-bold whitespace-nowrap overflow-hidden text-ellipsis ${cardTextColor} max-w-full ${tradingCard.title.length > 15 ? 'text-xs' : 'text-lg'
+                            }`}>
                             {tradingCard.title}
                         </h2>
                         <div className="flex flex-row items-center gap-2">

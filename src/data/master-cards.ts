@@ -323,7 +323,7 @@ export const masterCards: TradingCard[] = [
         hp: 50,
         title: "Dancing Cat",
         types: [CardType.Psychic, CardType.Star],
-        img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT534qAjw3xVULfczKrRAJHjNUCkDGSRgszVKTrGYXZt_CkOqoDIyz9myOs_XBCmj74f8s&usqp=CAU",
+        img: "https://media.tenor.com/5BYK-WS0__gAAAAM/cool-fun.gif",
         rarity: Rarity.Rare,
         moves: [
             {
@@ -1150,7 +1150,7 @@ export const masterCards: TradingCard[] = [
         hp: 20,
         title: "Peashooter",
         types: [CardType.Grass],
-        img: "/cards/pea.png",
+        img: "https://media.tenor.com/x_BYocjqeaEAAAAj/pea-shooter-plant-vs-zombie.gif",
         rarity: Rarity.Common,
         moves: [
             {
@@ -1163,11 +1163,11 @@ export const masterCards: TradingCard[] = [
         holo: false
     },
     {
-        id: "card55",
+        id: "card55b",
         hp: 20,
         title: "Sunflower",
         types: [CardType.Grass, CardType.Sun],
-        img: "https://plantsvszombies.wiki.gg/images/Sunflower-Almanac.png?37a7dd",
+        img: "https://media.tenor.com/tvq_K05lJXQAAAAM/plants-vs-zombie.gif",
         rarity: Rarity.Common,
         moves: [
             {

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import TabBar from "../../components/TabBar";
-import { getRandomCards, addCardsToCollection, checkLoginBonus, updateFlowerPoints } from "../../firebase/db";
+import { getRandomCardsForUser, addCardsToCollection, checkLoginBonus, updateFlowerPoints } from "../../firebase/db";
 import { auth } from "../../firebase/config";
 import { TradingCard, Rarity } from "../../types/trading-card";
 import RevealCard from "../../components/RevealCard";
@@ -11,7 +11,7 @@ const DRAW_COST = 10;
 
 export default function Home() {
     const [isDrawing, setIsDrawing] = useState(false);
-    const [drawnCards, setDrawnCards] = useState<Array<{ card: TradingCard, holo: boolean }>>([]);
+    const [drawnCards, setDrawnCards] = useState<Array<{ card: TradingCard; holo: boolean }>>([]);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
 
     useEffect(() => {
@@ -47,7 +47,7 @@ export default function Home() {
             const updatedPoints = await updateFlowerPoints(user.uid, -DRAW_COST);
             setFlowerPoints(updatedPoints);
 
-            const newCards = getRandomCards(3);
+            const newCards = await getRandomCardsForUser(user.uid, 3);
             const userCards = newCards.map(card => ({
                 cardId: card.id,
                 holo: card.rarity === Rarity.Legendary ? true : Math.random() < 0.085
@@ -81,6 +81,13 @@ export default function Home() {
                     <span className="text-emerald-500"> 20% Uncommon</span> • 
                     <span className="text-blue-500"> 10% Rare</span> • 
                     <span className="text-amber-500"> 2% Legendary</span>
+                    <div className="mt-2 text-xs text-gray-500">
+                        Undiscovered boost (per rarity): 
+                        <span className="text-gray-500"> 1% Common</span> • 
+                        <span className="text-emerald-500"> 5% Uncommon</span> • 
+                        <span className="text-blue-500"> 10% Rare</span> • 
+                        <span className="text-amber-500"> 25% Legendary</span>
+                    </div>
                 </div>
 
                 <button

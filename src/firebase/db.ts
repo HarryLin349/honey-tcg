@@ -36,6 +36,70 @@ export function getRandomCards(count: number): TradingCard[] {
     return drawnCards;
 }
 
+function getUndiscoveredBoostChance(rarity: Rarity): number {
+    switch (rarity) {
+        case Rarity.Common:
+            return 0.01;
+        case Rarity.Uncommon:
+            return 0.05;
+        case Rarity.Rare:
+            return 0.1;
+        case Rarity.Legendary:
+            return 0.25;
+        default:
+            return 0;
+    }
+}
+
+function pickCardFromRarity(
+    rarityCards: TradingCard[],
+    ownedIds: Set<string>,
+    rarity: Rarity
+): TradingCard {
+    const shouldBoost = Math.random() < getUndiscoveredBoostChance(rarity);
+    if (shouldBoost) {
+        const undiscovered = rarityCards.filter(card => !ownedIds.has(card.id));
+        if (undiscovered.length > 0) {
+            return undiscovered[Math.floor(Math.random() * undiscovered.length)];
+        }
+    }
+    return rarityCards[Math.floor(Math.random() * rarityCards.length)];
+}
+
+// Get random cards with rarity weights and undiscovered boost per user
+export async function getRandomCardsForUser(
+    userId: string,
+    count: number
+): Promise<TradingCard[]> {
+    const drawnCards: TradingCard[] = [];
+    const ownedCards = await getUserCollection(userId);
+    const ownedIds = new Set(ownedCards.map(card => card.id));
+    
+    // Separate cards by rarity
+    const commonCards = masterCards.filter(card => card.rarity === Rarity.Common);
+    const uncommonCards = masterCards.filter(card => card.rarity === Rarity.Uncommon);
+    const rareCards = masterCards.filter(card => card.rarity === Rarity.Rare);
+    const legendaryCards = masterCards.filter(card => card.rarity === Rarity.Legendary);
+
+    for (let i = 0; i < count; i++) {
+        const roll = Math.random() * 100; // Roll 0-100
+        
+        let selectedCard: TradingCard;
+        if (roll < 2) { // 2% Legendary
+            selectedCard = pickCardFromRarity(legendaryCards, ownedIds, Rarity.Legendary);
+        } else if (roll < 12) { // 10% Rare
+            selectedCard = pickCardFromRarity(rareCards, ownedIds, Rarity.Rare);
+        } else if (roll < 32) { // 20% Uncommon
+            selectedCard = pickCardFromRarity(uncommonCards, ownedIds, Rarity.Uncommon);
+        } else { // 70% Common
+            selectedCard = pickCardFromRarity(commonCards, ownedIds, Rarity.Common);
+        }
+        drawnCards.push(selectedCard);
+    }
+    
+    return drawnCards;
+}
+
 // Add cards to user's collection
 export async function addCardsToCollection(userId: string, cards: UserCard[]) {
     const userCollectionRef = doc(db, 'collections', userId);
@@ -96,6 +160,7 @@ export async function initializeUser(userId: string): Promise<UserData> {
     const userData: UserData = {
         userId,
         flowerPoints: userAuth?.email === 'test@test.com' ? 10000 : 30,
+        totalPointsSpent: 0,
         lastLoginBonus: new Date().toISOString().split('T')[0]
     };
     
@@ -117,7 +182,8 @@ export async function checkLoginBonus(userId: string): Promise<number> {
     if (isNaN(userData.flowerPoints)) {
         const fixedData = {
             ...userData,
-            flowerPoints: 10
+            flowerPoints: 10,
+            totalPointsSpent: Number.isFinite(userData.totalPointsSpent) ? userData.totalPointsSpent : 0
         };
         await setDoc(userRef, fixedData);
         return 10;
@@ -127,6 +193,7 @@ export async function checkLoginBonus(userId: string): Promise<number> {
         const updatedData = {
             ...userData,
             flowerPoints: userData.flowerPoints + 10,
+            totalPointsSpent: Number.isFinite(userData.totalPointsSpent) ? userData.totalPointsSpent : 0,
             lastLoginBonus: today
         };
         await setDoc(userRef, updatedData);
@@ -147,6 +214,7 @@ export async function updateFlowerPoints(userId: string, amount: number): Promis
     
     // Handle NaN flower points
     const currentPoints = isNaN(userData.flowerPoints) ? 10 : userData.flowerPoints;
+    const currentSpent = Number.isFinite(userData.totalPointsSpent) ? userData.totalPointsSpent : 0;
     const updatedPoints = currentPoints + amount;
     
     if (updatedPoints < 0) {
@@ -154,7 +222,8 @@ export async function updateFlowerPoints(userId: string, amount: number): Promis
     }
     
     await updateDoc(userRef, {
-        flowerPoints: updatedPoints
+        flowerPoints: updatedPoints,
+        totalPointsSpent: amount < 0 ? currentSpent + Math.abs(amount) : currentSpent
     });
     
     return updatedPoints;

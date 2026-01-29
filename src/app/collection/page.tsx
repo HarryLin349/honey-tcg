@@ -17,6 +17,7 @@ export default function Collection() {
     const [sortBy, setSortBy] = useState('id');
     const [selectedCard, setSelectedCard] = useState<TradingCard | null>(null);
     const [flowerPoints, setFlowerPoints] = useState<number>(0);
+    const [totalPointsSpent, setTotalPointsSpent] = useState<number>(0);
     const [specialEffect, setSpecialEffect] = useState<{
         type: 'honeypot' | 'wheelOfFortune' | 'gambling';
         success: boolean;
@@ -32,6 +33,7 @@ export default function Collection() {
                 const userData = await getUserData(user.uid);
                 setCards(userCards);
                 setFlowerPoints(userData?.flowerPoints || 0);
+                setTotalPointsSpent(userData?.totalPointsSpent || 0);
             }
             setLoading(false);
         };
@@ -106,6 +108,9 @@ export default function Collection() {
                 <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">My Collection</h1>
                 <div className="mb-4 text-lg text-slate-700 text-center">
                     Flower Points: <span className="font-bold text-amber-600">{flowerPoints} 🌻</span>
+                    <div className="text-sm text-gray-600">
+                        Total Points Spent: <span className="font-bold text-amber-600">{totalPointsSpent} 🌻</span>
+                    </div>
                 </div>
                 <div className="flex justify-center mb-6">
                     <SortDropdown value={sortBy} onChange={setSortBy} />
