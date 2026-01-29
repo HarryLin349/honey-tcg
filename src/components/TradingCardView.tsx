@@ -197,19 +197,19 @@ const TradingCardView: React.FC<TradingCardViewProps> = ({ tradingCard, holo, di
 
     return (
         <div
-            className="perspective-container"
+            className="perspective-container w-64 h-96"
             style={{ perspective: "1700px" }}
+            onMouseMove={handleMouse}
+            onMouseLeave={handleMouseLeave}
         >
             <motion.div
-                className={`relative w-64 h-96 ${backgroundColor} shadow-lg rounded-2xl px-4 pb-4 pt-3 flex flex-col items-center text-center border border-gray-300 overflow-hidden
+                className={`relative w-full h-full ${backgroundColor} shadow-lg rounded-2xl px-4 pb-4 pt-3 flex flex-col items-center text-center border border-gray-300 overflow-hidden
                     ${disabled ? 'opacity-50 grayscale' : ''}`}
                 style={{
                     transformStyle: "preserve-3d",
                     rotateX: rotateX,
                     rotateY: rotateY,
                 }}
-                onMouseMove={handleMouse}
-                onMouseLeave={handleMouseLeave}
             >
                 {holo && showSparkles && (
                     <div className="absolute inset-0 pointer-events-none z-20">
